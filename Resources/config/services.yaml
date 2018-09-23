@@ -1,0 +1,56 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+        # fetching services directly from the container via $container->get() won't work.
+        # The best practice is to be explicit about your dependencies anyway.
+
+    # Guard
+    Cstea\ApiBundle\EventListener\ControllerCheckRequestListener:
+        class: Cstea\ApiBundle\EventListener\ControllerCheckRequestListener
+        arguments:
+            $reader: '@annotation_reader'
+            $tokenStorage: '@security.token_storage'
+        tags:
+        - kernel.event_subscriber
+        
+    Cstea\ApiBundle\EventListener\KernelResponseListener:
+        class: Cstea\ApiBundle\EventListener\KernelResponseListener
+        tags:
+        - kernel.event_subscriber
+
+    Cstea\ApiBundle\Security\JwtTokenUserProvider:
+        class: Cstea\ApiBundle\Security\JwtTokenUserProvider
+        public: true
+
+    Cstea\ApiBundle\Security\Guard\JwtTokenGuard:
+        class: Cstea\ApiBundle\Security\Guard\JwtTokenGuard
+        public: true
+
+    # Serializer
+    Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor: ~
+    Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter: ~
+
+    Symfony\Component\Serializer\Normalizer\PropertyNormalizer:
+        class: Symfony\Component\Serializer\Normalizer\PropertyNormalizer
+        arguments:
+            $propertyTypeExtractor: '@Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor'
+            $nameConverter: '@Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter'
+
+    Symfony\Component\Serializer\Normalizer\DateTimeNormalizer: ~
+    Symfony\Component\Serializer\Encoder\JsonEncoder: ~
+
+    Symfony\Component\Serializer\SerializerInterface:
+        class: Symfony\Component\Serializer\Serializer
+        public: true
+        arguments:
+        - ['@Symfony\Component\Serializer\Normalizer\PropertyNormalizer', '@Symfony\Component\Serializer\Normalizer\DateTimeNormalizer']
+        - ['@Symfony\Component\Serializer\Encoder\JsonEncoder']
+
+    Cstea\ApiBundle\Validator\Constraints\ServiceCallbackValidator:
+        class: Cstea\ApiBundle\Validator\Constraints\ServiceCallbackValidator
+        public: true
+        calls:
+        - ['setContainer', ['@service_container']]

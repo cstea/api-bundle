@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<ruleset name="ApiBundle">
+    <arg name="tab-width" value="4"/>
+    
+    <!-- Include the whole PSR-2 standard -->
+    <rule ref="PSR1"/>
+    <rule ref="PSR2"/>
+    
+    <rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/ruleset.xml">
+        <!-- 4 spaces should be used as per PSR1 -->
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+        <!-- Enforcing fully qualified namespaces makes no sense -->
+        <exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces.NonFullyQualified"/>
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName"/>
+        <!-- No comment should be considered useless -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment"/>
+        <!-- Contradicts PSR-2 -->
+        <exclude name="SlevomatCodingStandard.Types.EmptyLinesAroundTypeBraces"/>
+        <!-- Yoda comparisons are confusing -->
+        <exclude name="SlevomatCodingStandard.ControlStructures.RequireYodaComparison" />
+        <!-- Bad practice .. -->
+        <exclude name="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses.UselessParentheses" />
+        <!-- Should be single line -->
+        <exclude name="SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment" />
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix" />
+    </rule>
+    
+    <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword">
+        <properties>
+            <property name="keywordsToCheck" type="array" value="T_EXTENDS,T_IMPLEMENTS"/>
+        </properties>
+    </rule>
+    
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+        <properties>
+            <property name="fullyQualifiedKeywords" type="array" value="T_EXTENDS,T_IMPLEMENTS" />
+            <property name="allowFullyQualifiedExceptions" type="boolean" value="true" />
+            <property name="allowFullyQualifiedGlobalClasses" type="boolean" value="true" />
+            <property name="allowFullyQualifiedGlobalFunctions" type="boolean" value="true" />
+            <property name="allowFullyQualifiedGlobalConstants" type="boolean" value="true" />
+        </properties>
+    </rule>
+
+    <rule ref="Squiz.Commenting.FunctionComment">
+        <exclude name="Squiz.Commenting.FunctionComment.InvalidReturn"/>
+        <exclude name="Squiz.Commenting.FunctionComment.MissingReturn"/>
+        <exclude name="Squiz.Commenting.FunctionComment.IncorrectTypeHint"/>
+        <exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName"/>
+    </rule>
+    
+    <rule ref="Squiz.NamingConventions">
+        <exclude name="Squiz.NamingConventions.ValidVariableName.PublicHasUnderscore" />
+        <exclude name="Squiz.NamingConventions.ValidVariableName.PrivateNoUnderscore" />
+        <exclude name="Squiz.NamingConventions.ValidFunctionName.PrivateNoUnderscore" />
+    </rule>
+
+    <rule ref="Squiz.Strings.ConcatenationSpacing">
+        <properties>
+            <property name="ignoreNewlines" value="true"/>
+            <property name="spacing" value="1"/>
+        </properties>
+    </rule>
+
+    <rule ref="Squiz.Strings.DoubleQuoteUsage"/>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
+        <message>Variable "%s" not allowed in double quoted string; use sprintf() instead</message>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+        <properties>
+            <property name="searchAnnotations" type="boolean" value="true"/>
+        </properties>
+    </rule>
+
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found">
+        <type>warning</type>
+    </rule>
+    <exclude-pattern>*/_*</exclude-pattern>
+</ruleset>
