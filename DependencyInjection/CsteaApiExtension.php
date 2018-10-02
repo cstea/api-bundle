@@ -25,5 +25,15 @@ class CsteaApiExtension extends \Symfony\Component\DependencyInjection\Extension
             new FileLocator(__DIR__.'/../Resources/config')
         );
         $loader->load('services.yaml');
+
+        $configuration = new Configuration();
+        $processedConfig = $this->processConfiguration($configuration, $configs);
+
+        if (isset($processedConfig['handle_exceptions'])) {
+            $container->setParameter('cstea.api_bundle.handle_exceptions', $processedConfig['handle_exceptions']);
+        }
+        if (isset($processedConfig['output_headers'])) {
+            $container->setParameter('cstea.api_bundle.output_headers', $processedConfig['output_headers']);
+        }
     }
 }

@@ -1,3 +1,7 @@
+parameters:
+    cstea.api_bundle.handle_exceptions: true
+    cstea.api_bundle.output_headers:
+        Access-Control-Allow-Origin: '*'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -18,6 +22,9 @@ services:
         
     Cstea\ApiBundle\EventListener\KernelResponseListener:
         class: Cstea\ApiBundle\EventListener\KernelResponseListener
+        arguments:
+            $handleExceptions: '%cstea.api_bundle.handle_exceptions%'
+            $outputHeaders: '%cstea.api_bundle.output_headers%'
         tags:
         - kernel.event_subscriber
 

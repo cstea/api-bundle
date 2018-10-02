@@ -13,6 +13,23 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
  */
 class KernelResponseListener implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
 {
+    /** @var bool */
+    private $handleExceptions;
+
+    /** @var mixed[] */
+    private $outputHeaders = [];
+
+    /**
+     * KernelResponseListener constructor.
+     *
+     * @param bool $handleExceptions
+     */
+    public function __construct(bool $handleExceptions = true, array $outputHeaders = [])
+    {
+        $this->handleExceptions = $handleExceptions;
+        $this->outputHeaders = $outputHeaders;
+    }
+
     /**
      * List of all subscribed events.
      *
@@ -34,8 +51,12 @@ class KernelResponseListener implements \Symfony\Component\EventDispatcher\Event
      */
     public function onKernelException(GetResponseForExceptionEvent $event): void
     {
+        if (!$this->handleExceptions) {
+            return;
+        }
+
         $response = (new ExceptionResponse())($event->getException());
-        
+
 
         if ($response) {
             $event->setResponse($response);
@@ -51,6 +72,6 @@ class KernelResponseListener implements \Symfony\Component\EventDispatcher\Event
     public function onKernelResponse(FilterResponseEvent $event): void
     {
         $response = $event->getResponse();
-        $response->headers->add(['Access-Control-Allow-Origin' => '*']);
+        $response->headers->add($this->outputHeaders);
     }
 }
