@@ -12,11 +12,15 @@ namespace Cstea\ApiBundle\Security;
  */
 abstract class OutputScope
 {
-    public const SCOPE_DEFAULT = 'default';
-     
-    /** @var string[]  */
-    private $scopes = [self::SCOPE_DEFAULT];
+    private const SCOPE_DEFAULT = 'default';
+    public const USER_ALLOW_ALL = 'allow_all';
 
+    /** @var string[] */
+    protected $registeredScopes = [];
+    
+    /** @var string[]  */
+    private $requestedScopes = [self::SCOPE_DEFAULT];
+    
     /** @var User */
     private $user;
     
@@ -30,7 +34,7 @@ abstract class OutputScope
     {
         $this->user = $user;
         foreach ($requestedScopes as $scope) {
-            $this->addScope($scope);
+            $this->requestScope($scope);
         }
     }
     
@@ -39,9 +43,11 @@ abstract class OutputScope
      *
      * @param string $scope Scope.
      */
-    public function addScope(string $scope): void
+    public function requestScope(string $scope): void
     {
-        $this->scopes[] = $scope;
+        if (\array_key_exists($scope, $this->registeredScopes)) {
+            $this->requestedScopes[] = $scope;
+        }
         
         return;
     }
@@ -60,6 +66,10 @@ abstract class OutputScope
             return [self::SCOPE_DEFAULT];
         }
         
-        return \array_intersect($this->scopes, $this->user->getScopes());
+        return \array_filter($this->requestedScopes, function ($scope) {
+           return $scope === self::SCOPE_DEFAULT
+               || $this->registeredScopes[$scope] === self::USER_ALLOW_ALL
+               || \in_array($this->registeredScopes[$scope], $this->user->getScopes());
+        });
     }
 }
