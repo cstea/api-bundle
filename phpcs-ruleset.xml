@@ -23,6 +23,8 @@
         <!-- Should be single line -->
         <exclude name="SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment" />
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix" />
+        <!-- Ternaries should be allowed and are useful -->
+        <exclude name="SlevomatCodingStandard.ControlStructures.DisallowShortTernaryOperator" />
     </rule>
     
     <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword">
