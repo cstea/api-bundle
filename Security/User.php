@@ -21,6 +21,7 @@ interface User extends \Symfony\Component\Security\Core\User\UserInterface
      * Sets scopes.
      *
      * @param string[] $scopes Scopes.
+     * @return mixed
      */
-    public function setScopes(array $scopes = []): void;
+    public function setScopes(array $scopes = []);
 }
