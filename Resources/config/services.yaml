@@ -11,7 +11,7 @@ services:
         # fetching services directly from the container via $container->get() won't work.
         # The best practice is to be explicit about your dependencies anyway.
 
-    # Guard
+    # Guards
     Cstea\ApiBundle\EventListener\ControllerCheckRequestListener:
         class: Cstea\ApiBundle\EventListener\ControllerCheckRequestListener
         arguments:
@@ -35,6 +35,12 @@ services:
     Cstea\ApiBundle\Security\Guard\JwtTokenGuard:
         class: Cstea\ApiBundle\Security\Guard\JwtTokenGuard
         public: true
+
+    Cstea\ApiBundle\Security\Guard\TestGuard:
+        class: Cstea\ApiBundle\Security\Guard\TestGuard
+        public: true
+        calls:
+        - ['setContainer', ['@service_container']]
 
     # Serializer
     Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor: ~
