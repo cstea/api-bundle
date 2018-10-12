@@ -17,17 +17,18 @@ class KernelResponseListener implements \Symfony\Component\EventDispatcher\Event
     private $handleExceptions;
 
     /** @var mixed[] */
-    private $outputHeaders = [];
+    private $responseHeaders = [];
 
     /**
      * KernelResponseListener constructor.
      *
-     * @param bool $handleExceptions
+     * @param bool    $handleExceptions Enable exception handling.
+     * @param mixed[] $responseHeaders  Response headers to output.
      */
-    public function __construct(bool $handleExceptions = true, array $outputHeaders = [])
+    public function __construct(bool $handleExceptions = true, array $responseHeaders = [])
     {
         $this->handleExceptions = $handleExceptions;
-        $this->outputHeaders = $outputHeaders;
+        $this->responseHeaders = $responseHeaders;
     }
 
     /**
@@ -72,6 +73,6 @@ class KernelResponseListener implements \Symfony\Component\EventDispatcher\Event
     public function onKernelResponse(FilterResponseEvent $event): void
     {
         $response = $event->getResponse();
-        $response->headers->add($this->outputHeaders);
+        $response->headers->add($this->responseHeaders);
     }
 }

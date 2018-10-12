@@ -1,6 +1,6 @@
 parameters:
     cstea.api_bundle.handle_exceptions: true
-    cstea.api_bundle.output_headers:
+    cstea.api_bundle.response_headers:
         Access-Control-Allow-Origin: '*'
 services:
     # default configuration for services in *this* file
@@ -19,12 +19,12 @@ services:
             $tokenStorage: '@security.token_storage'
         tags:
         - kernel.event_subscriber
-        
+
     Cstea\ApiBundle\EventListener\KernelResponseListener:
         class: Cstea\ApiBundle\EventListener\KernelResponseListener
         arguments:
             $handleExceptions: '%cstea.api_bundle.handle_exceptions%'
-            $outputHeaders: '%cstea.api_bundle.output_headers%'
+            $responseHeaders: '%cstea.api_bundle.response_headers%'
         tags:
         - kernel.event_subscriber
 
