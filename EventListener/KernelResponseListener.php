@@ -27,10 +27,40 @@ class KernelResponseListener implements \Symfony\Component\EventDispatcher\Event
      */
     public function __construct(bool $handleExceptions = true, array $responseHeaders = [])
     {
+        $this->setHandleExceptions($handleExceptions);
+        $this->setResponseHeaders($responseHeaders);
+    }
+
+    /**
+     * Enable of disable exception handling.
+     *
+     * @param bool $handleExceptions Enable exception handling.
+     */
+    public function setHandleExceptions(bool $handleExceptions = true): void
+    {
         $this->handleExceptions = $handleExceptions;
+    }
+
+    /**
+     * Set response headers.
+     *
+     * @param mixed $responseHeaders Response headers to output.
+     */
+    public function setResponseHeaders(array $responseHeaders): void
+    {
         $this->responseHeaders = $responseHeaders;
     }
 
+    /**
+     * Add response headers to the existing set.
+     *
+     * @param mixed $responseHeaders Response headers to output.
+     */
+    public function addResponseHeaders(array $responseHeaders): void
+    {
+        $this->responseHeaders = \array_merge($this->responseHeaders, $responseHeaders);
+    }
+    
     /**
      * List of all subscribed events.
      *

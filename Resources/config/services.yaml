@@ -27,6 +27,7 @@ services:
             $responseHeaders: '%cstea.api_bundle.response_headers%'
         tags:
         - kernel.event_subscriber
+        public: true
 
     Cstea\ApiBundle\Security\JwtTokenUserProvider:
         class: Cstea\ApiBundle\Security\JwtTokenUserProvider
