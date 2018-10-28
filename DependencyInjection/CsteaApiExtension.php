@@ -33,6 +33,10 @@ class CsteaApiExtension extends \Symfony\Component\DependencyInjection\Extension
             $container->setParameter('cstea.api_bundle.handle_exceptions', $processedConfig['handle_exceptions']);
         }
 
+        if (isset($processedConfig['pattern'])) {
+            $container->setParameter('cstea.api_bundle.pattern', $processedConfig['pattern']);
+        }
+
         if (isset($processedConfig['response_headers'])) {
             $keys = \array_keys($processedConfig['response_headers']);
             $values = \array_values($processedConfig['response_headers']);

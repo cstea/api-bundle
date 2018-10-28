@@ -18,6 +18,7 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
         $rootNode
             ->children()
             ->booleanNode('handle_exceptions')->end()
+            ->scalarNode('pattern')->end()
             ->arrayNode('response_headers')
             ->ignoreExtraKeys(false)
             ->end()

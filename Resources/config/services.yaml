@@ -1,5 +1,6 @@
 parameters:
     cstea.api_bundle.handle_exceptions: true
+    cstea.api_bundle.pattern: ^/
     cstea.api_bundle.response_headers:
         Access-Control-Allow-Origin: '*'
 services:
@@ -25,6 +26,7 @@ services:
         arguments:
             $handleExceptions: '%cstea.api_bundle.handle_exceptions%'
             $responseHeaders: '%cstea.api_bundle.response_headers%'
+            $pattern: '%cstea.api_bundle.pattern%'
         tags:
         - kernel.event_subscriber
         public: true
