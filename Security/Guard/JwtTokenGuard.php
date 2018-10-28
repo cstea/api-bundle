@@ -2,6 +2,8 @@
 
 namespace Cstea\ApiBundle\Security\Guard;
 
+use Cstea\ApiBundle\Security\Guard\Event\AuthenticationSuccess;
+use Cstea\ApiBundle\Traits\EventAware;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +20,8 @@ use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
  */
 class JwtTokenGuard implements \Symfony\Component\Security\Guard\AuthenticatorInterface
 {
+    use EventAware;
+    
     // @codingStandardsIgnoreStart
     /** @var string */
     private $userField;
@@ -104,7 +108,13 @@ class JwtTokenGuard implements \Symfony\Component\Security\Guard\AuthenticatorIn
         $tokenVerified = $token->verify(new Sha256(), \base64_decode(\getenv('JWT_PUBLIC_KEY')));
         $user->setScopes($token->getClaim('scopes'));
         
-        return $userVerified && $tokenVerified && !$token->isExpired();
+        $pass = $userVerified && $tokenVerified && !$token->isExpired();
+        
+        if ($pass) {
+            $this->triggerEvent(new AuthenticationSuccess($token));
+        }
+        
+        return $pass;
     }
 
     /**
