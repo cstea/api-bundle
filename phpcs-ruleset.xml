@@ -74,6 +74,12 @@
         </properties>
     </rule>
 
+    <rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing">
+        <properties>
+            <property name="linesCountBetweenDifferentAnnotationsTypes" type="integer" value="1" />
+        </properties>
+    </rule>
+
     <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found">
         <type>warning</type>
     </rule>
