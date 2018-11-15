@@ -76,7 +76,7 @@
 
     <rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing">
         <properties>
-            <property name="linesCountBetweenDifferentAnnotationsTypes" type="integer" value="1" />
+            <property name="linesCountBetweenDifferentAnnotationsTypes" type="integer" value="0" />
         </properties>
     </rule>
 
