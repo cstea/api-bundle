@@ -61,6 +61,9 @@ trait SerializerAware
                 ['object_to_populate' => $entity]
             );
         } catch (\Symfony\Component\Serializer\Exception\NotNormalizableValueException $exception) {
+            if (\method_exists($this, 'getLogger')) {
+                $this->getLogger()->error('Serialization error', ['exception' => $exception]);
+            }
             throw new \InvalidArgumentException('Cannot serialize', 0, $exception);
         }
     }

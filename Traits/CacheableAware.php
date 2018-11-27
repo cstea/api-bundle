@@ -6,8 +6,6 @@ use Psr\Cache\CacheItemPoolInterface;
 
 trait CacheableAware
 {
-    use LoggerAware;
-    
     /** @var CacheItemPoolInterface */
     private $cacheAdapter;
 
@@ -36,8 +34,10 @@ trait CacheableAware
             $cacheItem = $this->cacheAdapter->getItem($key);
             if ($cacheItem->isHit()) {
                 $data = $cacheItem->get();
-                $this->getLogger()->notice('Hitting cached data', ['key' => $key]);
-                $this->getLogger()->debug('Fetching from cache', ['data' => $data]);
+                if (\method_exists($this, 'getLogger')) {
+                    $this->getLogger()->notice('Hitting cached data', ['key' => $key]);
+                    $this->getLogger()->debug('Fetching from cache', ['data' => $data]);
+                }
                 return $data;
             }
         }
@@ -47,8 +47,10 @@ trait CacheableAware
         if ($this->cacheAdapter !== null) {
             $cacheItem->set($result);
             $cacheItem->expiresAfter($ttl);
-            $this->getLogger()->notice('Saving cached item', ['key' => $key, 'ttl' => $ttl]);
-            $this->getLogger()->debug('Item to cache', ['data' => $result]);
+            if (\method_exists($this, 'getLogger')) {
+                $this->getLogger()->notice('Saving cached item', ['key' => $key, 'ttl' => $ttl]);
+                $this->getLogger()->debug('Item to cache', ['data' => $result]);
+            }
             $this->cacheAdapter->save($cacheItem);
             
             $cacheKeys = $this->cacheAdapter->getItem('cstea.apibundle.cacheKeys');
@@ -80,7 +82,9 @@ trait CacheableAware
                 $deleteKeys = \array_filter($cachedKeys, static function ($key) use ($namespace) {
                     return \stripos($key, $namespace) === 0;
                 });
-                $this->getLogger()->notice('Invalidating cache items', ['keys' => $deleteKeys]);
+                if (\method_exists($this, 'getLogger')) {
+                    $this->getLogger()->notice('Invalidating cache items', ['keys' => $deleteKeys]);
+                }
                 $this->cacheAdapter->deleteItems($deleteKeys);
                 $cacheKeys->set(\array_diff($cachedKeys, $deleteKeys));
                 $this->cacheAdapter->save($cacheKeys);

@@ -16,7 +16,6 @@ trait PersistAware
 {
     
     use EventAware;
-    use LoggerAware;
     use ValidateAware;
 
     /**
@@ -36,9 +35,13 @@ trait PersistAware
             if ($onSuccess !== null) {
                 $this->triggerEvent($onSuccess);
             }
-            $this->getLogger()->info('Entity saved', ['entity' => $entity]);
+            if (\method_exists($this, 'getLogger')) {
+                $this->getLogger()->info('Entity saved', ['entity' => $entity]);
+            }
         } catch (\Throwable $exception) {
-            $this->getLogger()->error($exception->getMessage(), ['exception' => $exception, 'entity' => $entity]);
+            if (\method_exists($this, 'getLogger')) {
+                $this->getLogger()->error($exception->getMessage(), ['exception' => $exception, 'entity' => $entity]);
+            }
             throw new \Cstea\ApiBundle\Exception\RecordPersistException($exception);
         }
     }
@@ -58,9 +61,13 @@ trait PersistAware
             if ($onSuccess !== null) {
                 $this->triggerEvent($onSuccess);
             }
-            $this->getLogger()->info('Entity deleted', ['entity' => $entity]);
+            if (\method_exists($this, 'getLogger')) {
+                $this->getLogger()->info('Entity deleted', ['entity' => $entity]);
+            }
         } catch (\Throwable $exception) {
-            $this->getLogger()->error($exception->getMessage(), ['exception' => $exception, 'entity' => $entity]);
+            if (\method_exists($this, 'getLogger')) {
+                $this->getLogger()->error($exception->getMessage(), ['exception' => $exception, 'entity' => $entity]);
+            }
             throw new \Cstea\ApiBundle\Exception\RecordPersistException($exception);
         }
     }
