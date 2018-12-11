@@ -21,6 +21,42 @@ trait CacheableAware
     }
 
     /**
+     * Simple cache setter.
+     *
+     * @param string $key   Cache key.
+     * @param mixed  $value Value to cache.
+     * @param int    $ttl   TTL.
+     */
+    protected function cacheSetValue(string $key, $value, int $ttl = 3600): void
+    {
+        if ($this->cacheAdapter !== null) {
+            $cacheItem = $this->cacheAdapter->getItem($key);
+            $cacheItem->set($value);
+            $cacheItem->expiresAfter($ttl);
+            $this->cacheAdapter->save($cacheItem);
+        }
+    }
+
+    /**
+     * Simple cache getter.
+     *
+     * @param string $key Cache key.
+     * @return mixed|null
+     */
+    protected function cacheGetValue(string $key)
+    {
+        $value = null;
+        if ($this->cacheAdapter !== null) {
+            $cacheItem = $this->cacheAdapter->getItem($key);
+            if ($cacheItem->isHit()) {
+                $value = $cacheItem->get();
+            }
+        }
+        
+        return $value;
+    }
+
+    /**
      * Cache wrapper
      *
      * @param string   $key      Cache ID/Key.
