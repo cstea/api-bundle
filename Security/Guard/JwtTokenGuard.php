@@ -105,7 +105,11 @@ class JwtTokenGuard implements \Symfony\Component\Security\Guard\AuthenticatorIn
         $token = (new Parser())->parse((string) $credentials['token']); // Parses from a string
         $userVerified = $user->getUsername() === $token->getClaim($this->userField)
             || $user->getUsername() === 'client-' . $token->getClaim($this->clientField);
-        $tokenVerified = $token->verify(new Sha256(), \base64_decode(\getenv('JWT_PUBLIC_KEY')));
+        
+        $key = \getenv('JWT_PUBLIC_KEY');
+        $key = \file_exists($key) ? \file_get_contents($key) : \base64_decode($key);
+        
+        $tokenVerified = $token->verify(new Sha256(), $key);
         $user->setScopes($token->getClaim('scopes'));
         
         $pass = $userVerified && $tokenVerified && !$token->isExpired();
