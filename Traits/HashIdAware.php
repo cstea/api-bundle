@@ -11,7 +11,7 @@ namespace Cstea\ApiBundle\Traits;
 trait HashIdAware
 {
     /** @var string */
-    private $id;
+    protected $id;
     
     /**
      * Gets id.

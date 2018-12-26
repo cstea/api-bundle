@@ -11,7 +11,7 @@ namespace Cstea\ApiBundle\Traits;
 trait NumberIdAware
 {
     /** @var int */
-    private $id;
+    protected $id;
 
     /**
      * Gets id.
