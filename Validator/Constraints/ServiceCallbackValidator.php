@@ -55,8 +55,9 @@ class ServiceCallbackValidator extends \Symfony\Component\Validator\ConstraintVa
         }
 
         try {
+            $arg = $constraint->pass === 'value' ? $this->context->getValue() : $this->context->getObject();
             // Run the method. Any exception is converted into a violation error.
-            $service->$method($this->context->getObject());
+            $service->$method($arg);
         } catch (\Throwable $exception) {
             $this->context->buildViolation($exception->getMessage())->addViolation();
         }
