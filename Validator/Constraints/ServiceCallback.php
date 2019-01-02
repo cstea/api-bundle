@@ -19,6 +19,9 @@ class ServiceCallback extends \Symfony\Component\Validator\Constraint
     
     /** @var string */
     public $pass = 'value';
+    
+    /** @var bool */
+    public $nullable = false;
 
     /**
      * ServiceCallback constructor.
