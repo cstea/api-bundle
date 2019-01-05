@@ -40,16 +40,20 @@ trait ValidateAware
     /**
      * Runs validation against an entity.
      *
-     * @param \object $entity Entity to validate.
+     * @param \object       $entity Entity to validate.
+     * @param string[]|null $groups Validation groups.
      * @throws \Cstea\ApiBundle\Exception\RecordValidationException Validation error.
      */
-    protected function validate(object $entity): void
+    protected function validate(object $entity, ?array $groups = null): void
     {
-        $errors = $this->validator->validate($entity);
+        $errors = $this->validator->validate($entity, null, $groups);
         if (!$errors->count()) {
             return;
         }
-
+        if (\method_exists($this, 'getLogger')) {
+            $this->getLogger()->debug('Validation errors', ['errors' => (string) $errors]);
+        }
+        
         throw new \Cstea\ApiBundle\Exception\RecordValidationException($errors);
     }
 }

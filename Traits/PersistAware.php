@@ -29,6 +29,9 @@ trait PersistAware
      */
     protected function saveEntity(object $entity, ReadWrite $repository, ?Event $onSuccess = null): void
     {
+        if (\method_exists($this, 'getLogger')) {
+            $this->getLogger()->debug('Entity to save', ['entity' => $entity]);
+        }
         $this->validate($entity);
         try {
             $repository->save($entity);
