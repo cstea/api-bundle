@@ -20,19 +20,25 @@ class KernelResponseListener implements \Symfony\Component\EventDispatcher\Event
     private $responseHeaders = [];
 
     /** @var string */
-    private $pattern;
+    private $routeMatch;
 
     /**
      * KernelResponseListener constructor.
      *
      * @param bool    $handleExceptions Enable exception handling.
+     * @param string  $routeMatch       Regex pattern to match route.
      * @param mixed[] $responseHeaders  Response headers to output.
      */
-    public function __construct(bool $handleExceptions = true, string $pattern = '^/', array $responseHeaders = [])
+    public function __construct(bool $handleExceptions = true, string $routeMatch = '^/', array $responseHeaders = [])
     {
-        $this->pattern = $pattern;
+        $this->setRouteMatch($routeMatch);
         $this->setHandleExceptions($handleExceptions);
         $this->setResponseHeaders($responseHeaders);
+    }
+    
+    public function setRouteMatch(string $routeMatch = '^/'): void
+    {
+        $this->routeMatch = $routeMatch;
     }
 
     /**
@@ -87,7 +93,7 @@ class KernelResponseListener implements \Symfony\Component\EventDispatcher\Event
     public function onKernelException(GetResponseForExceptionEvent $event): void
     {
         $requestUri = $event->getRequest()->getRequestUri();
-        $pattern = \str_replace('/', '\/', $this->pattern);
+        $pattern = \str_replace('/', '\/', $this->routeMatch);
 
         if (!$this->handleExceptions || !\preg_match('/' . $pattern . '/', $requestUri)) {
             return;

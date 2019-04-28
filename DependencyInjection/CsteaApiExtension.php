@@ -33,8 +33,8 @@ class CsteaApiExtension extends \Symfony\Component\DependencyInjection\Extension
             $container->setParameter('cstea.api_bundle.handle_exceptions', $processedConfig['handle_exceptions']);
         }
 
-        if (isset($processedConfig['pattern'])) {
-            $container->setParameter('cstea.api_bundle.pattern', $processedConfig['pattern']);
+        if (isset($processedConfig['route_match'])) {
+            $container->setParameter('cstea.api_bundle.route_match', $processedConfig['route_match']);
         }
 
         if (isset($processedConfig['response_headers'])) {
