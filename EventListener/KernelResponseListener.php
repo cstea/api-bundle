@@ -5,6 +5,7 @@ namespace Cstea\ApiBundle\EventListener;
 use Cstea\ApiBundle\Exception\ExceptionResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class KernelResponseListener
@@ -22,18 +23,27 @@ class KernelResponseListener implements \Symfony\Component\EventDispatcher\Event
     /** @var string */
     private $routeMatch;
 
+    /** @var TranslatorInterface */
+    private $translator;
+
     /**
      * KernelResponseListener constructor.
      *
-     * @param bool    $handleExceptions Enable exception handling.
-     * @param string  $routeMatch       Regex pattern to match route.
-     * @param mixed[] $responseHeaders  Response headers to output.
+     * @param bool                $handleExceptions Enable exception handling.
+     * @param string              $routeMatch       Regex pattern to match route.
+     * @param mixed[]             $responseHeaders  Response headers to output.
+     * @param TranslatorInterface $translator       Translator.
      */
-    public function __construct(bool $handleExceptions = true, string $routeMatch = '^/', array $responseHeaders = [])
-    {
+    public function __construct(
+        bool $handleExceptions = true,
+        string $routeMatch = '^/',
+        array $responseHeaders = [],
+        TranslatorInterface $traslator
+    ) {
         $this->setRouteMatch($routeMatch);
         $this->setHandleExceptions($handleExceptions);
         $this->setResponseHeaders($responseHeaders);
+        $this->translator = $traslator;
     }
     
     public function setRouteMatch(string $routeMatch = '^/'): void
@@ -99,7 +109,7 @@ class KernelResponseListener implements \Symfony\Component\EventDispatcher\Event
             return;
         }
 
-        $response = (new ExceptionResponse())($event->getException());
+        $response = (new ExceptionResponse($this->translator))($event->getException());
 
 
         if ($response) {

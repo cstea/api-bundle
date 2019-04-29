@@ -4,6 +4,7 @@ namespace Cstea\ApiBundle\Exception;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class ExceptionResponse
@@ -12,6 +13,22 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExceptionResponse
 {
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * ExceptionResponse constructor.
+     *
+     * @param TranslatorInterface $translator Translator.
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * Generates a proper HTTP response for the provided error message.
      *
@@ -71,10 +88,12 @@ class ExceptionResponse
         if ($exception instanceof \Cstea\ApiBundle\Exception\RecordValidationException) {
             $errors = $exception->getErrors();
             $outputErrors = [];
+            
             for ($i = 0; $i < $errors->count(); $i += 1) {
                 $error = $errors->get($i);
-                $outputErrors[$error->getPropertyPath()][] = $error->getMessage();
+                $outputErrors[$error->getPropertyPath()][] = $this->translator->trans($error->getMessage());
             }
+            
             $response = $this->createResponse(
                 'Validation Failed',
                 Response::HTTP_UNPROCESSABLE_ENTITY,
