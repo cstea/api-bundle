@@ -91,7 +91,14 @@ class ExceptionResponse
             
             for ($i = 0; $i < $errors->count(); $i += 1) {
                 $error = $errors->get($i);
-                $outputErrors[$error->getPropertyPath()][] = $this->translator->trans($error->getMessage());
+                $property = \strtolower( // Convert field name from camelCase to snake_case
+                    preg_replace(
+                        '/(?<!^)[A-Z]/',
+                        '_$0',
+                        $error->getPropertyPath()
+                    )
+                );
+                $outputErrors[$property][] = $this->translator->trans($error->getMessage());
             }
             
             $response = $this->createResponse(
