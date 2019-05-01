@@ -13,22 +13,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ExceptionResponse
 {
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * ExceptionResponse constructor.
-     *
-     * @param TranslatorInterface $translator Translator.
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Generates a proper HTTP response for the provided error message.
      *
@@ -98,7 +82,7 @@ class ExceptionResponse
                         $error->getPropertyPath()
                     )
                 );
-                $outputErrors[$property][] = $this->translator->trans($error->getMessage());
+                $outputErrors[$property][] = $error->getMessage();
             }
             
             $response = $this->createResponse(
