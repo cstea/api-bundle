@@ -25,6 +25,10 @@
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix" />
         <!-- Ternaries should be allowed and are useful -->
         <exclude name="SlevomatCodingStandard.ControlStructures.DisallowShortTernaryOperator" />
+        <!-- Sometimes you need to extend a function and not use one of its params -->
+        <exclude name="SlevomatCodingStandard.Functions.UnusedParameter" />
+        <!-- For repositories using traits, sometimes there is nothing to put after the traits. -->
+        <exclude name="SlevomatCodingStandard.Classes.TraitUseSpacing" />
     </rule>
     
     <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword">
