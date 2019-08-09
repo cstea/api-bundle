@@ -49,6 +49,9 @@ trait SerializerAware
         $converted = \json_decode($json, true);
 
         if (!$json || \json_last_error() !== \JSON_ERROR_NONE || !$converted) {
+            if (\method_exists($this, 'getLogger')) {
+                $this->getLogger()->error('Deserialization error, json_decode error', ['code' => \json_last_error()]);
+            }
             throw new \InvalidArgumentException('Invalid object');
         }
         
