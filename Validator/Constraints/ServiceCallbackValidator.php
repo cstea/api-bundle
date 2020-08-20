@@ -3,7 +3,6 @@
 namespace Cstea\ApiBundle\Validator\Constraints;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -18,19 +17,6 @@ class ServiceCallbackValidator extends \Symfony\Component\Validator\ConstraintVa
     
     use ContainerAwareTrait;
     
-    /** @var TranslatorInterface */
-    private $translator;
-
-    /**
-     * ServiceCallbackValidator constructor.
-     *
-     * @param TranslatorInterface $translator Translator.
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Runs validator by calling the specified service method.
      *
@@ -77,7 +63,7 @@ class ServiceCallbackValidator extends \Symfony\Component\Validator\ConstraintVa
             // Run the method. Any exception is converted into a violation error.
             $service->$method($arg);
         } catch (\Throwable $exception) {
-            $message = $this->translator->trans($exception->getMessage(), [], 'errors');
+            $message = $exception->getMessage();
             $this->context->buildViolation($message)->addViolation();
         }
         
