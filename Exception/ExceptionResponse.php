@@ -58,7 +58,7 @@ class ExceptionResponse
         }
 
         if ($exception instanceof \Cstea\ApiBundle\Exception\UserUnauthorizedException) {
-            $response = $this->createResponse('Unauthorized', Response::HTTP_UNAUTHORIZED);
+            $response = $this->createResponse('Unauthorized', Response::HTTP_UNAUTHORIZED, $exception->getErrors());
         }
 
         if ($exception instanceof \Cstea\ApiBundle\Exception\UserForbiddenException) {

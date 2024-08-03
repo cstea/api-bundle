@@ -10,6 +10,17 @@ namespace Cstea\ApiBundle\Exception;
  */
 class UserUnauthorizedException extends \Exception
 {
+    /** @var array */
+    protected $errors = [];
+
     /** @var string */
     protected $message = 'Unauthorized';
+
+    public function setErrors(array $errors): void {
+        $this->errors = $errors;
+    }
+
+    public function getErrors(): array {
+        return $this->errors;
+    }
 }
