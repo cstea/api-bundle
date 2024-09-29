@@ -83,4 +83,9 @@ class JwtTokenUser implements \Cstea\ApiBundle\Security\User
     {
         return;
     }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getUsername();
+    }
 }

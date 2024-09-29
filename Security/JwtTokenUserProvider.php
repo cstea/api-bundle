@@ -33,6 +33,11 @@ class JwtTokenUserProvider implements \Symfony\Component\Security\Core\User\User
         return $user;
     }
 
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        return $this->loadUserByUsername($identifier);
+    }
+
     /**
      * Determines whether the provided class should be handled by this provider.
      *
@@ -50,7 +55,7 @@ class JwtTokenUserProvider implements \Symfony\Component\Security\Core\User\User
      * @param UserInterface $user User object.
      * @return UserInterface|mixed|null
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         return $this->loadUserByUsername($user->getUsername());
     }

@@ -34,6 +34,6 @@ trait EventAware
      */
     public function triggerEvent(Event $event): void
     {
-        $this->eventDispatcher->dispatch($event::getName(), $event);
+        $this->eventDispatcher->dispatch($event, $event::getName());
     }
 }

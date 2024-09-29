@@ -20,10 +20,10 @@ class ServiceCallbackValidator extends \Symfony\Component\Validator\ConstraintVa
     /**
      * Runs validator by calling the specified service method.
      *
-     * @param mixed      $object     Object to validate.
+     * @param mixed      $value     Object to validate.
      * @param Constraint $constraint Constraint object.
      */
-    public function validate($object, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof ServiceCallback) {
             throw new \Symfony\Component\Validator\Exception\UnexpectedTypeException(
@@ -32,7 +32,7 @@ class ServiceCallbackValidator extends \Symfony\Component\Validator\ConstraintVa
             );
         }
         
-        if ($object === null) {
+        if ($value === null) {
             return;
         }
         
@@ -66,7 +66,5 @@ class ServiceCallbackValidator extends \Symfony\Component\Validator\ConstraintVa
             $message = $exception->getMessage();
             $this->context->buildViolation($message)->addViolation();
         }
-        
-        return;
     }
 }
