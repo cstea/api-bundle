@@ -5,8 +5,8 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "doctrine/annotations": "^1.6",
-        "lcobucci/jwt": "^3.2",
+        "doctrine/annotations": "^2.0",
+        "lcobucci/jwt": "^5.3",
         "symfony/property-info": "^7.1",
         "symfony/security-bundle": "^7.1",
         "symfony/serializer-pack": "^1.0",
