@@ -3,7 +3,7 @@
     "description": "Symfony bundle providing an opinionated toolkit for building RESTful APIs",
     "type": "symfony-bundle",
     "require": {
-        "php": "^7.2",
+        "php": "^7.2|^8.0",
         "ext-json": "*",
         "doctrine/annotations": "^1.6",
         "lcobucci/jwt": "^3.2",
@@ -13,12 +13,6 @@
         "symfony/serializer-pack": "^1.0",
         "symfony/validator": "^4.1",
         "symfony/event-dispatcher": "^4.1"
-    },
-    "require-dev": {
-        "codeception/codeception": "^2.4",
-        "mockery/mockery": "^1.1",
-        "nubs/random-name-generator": "^2.1",
-        "slevomat/coding-standard": "^4.8"
     },
     "autoload": {
         "psr-4": { "Cstea\\ApiBundle\\": "" }
