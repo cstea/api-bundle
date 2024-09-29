@@ -8,7 +8,7 @@ namespace Cstea\ApiBundle\Repository;
  * 
  * @package Cstea\ApiBundle\Repository
  */
-interface ReadWrite extends \Cstea\ApiBundle\Repository\ReadOnly
+interface ReadWriteRepository extends \Cstea\ApiBundle\Repository\ReadOnlyRepository
 {
     /**
      * @param \object $entity Entity to save.

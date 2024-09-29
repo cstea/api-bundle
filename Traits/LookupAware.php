@@ -2,7 +2,7 @@
 
 namespace Cstea\ApiBundle\Traits;
 
-use Cstea\ApiBundle\Repository\ReadOnly;
+use Cstea\ApiBundle\Repository\ReadOnlyRepository;
 
 /**
  * Trait LookupAware
@@ -15,14 +15,14 @@ trait LookupAware
     /**
      * Wrapper for getting a single record from a repository.
      *
-     * @param ReadOnly $repository Repository.
+     * @param ReadOnlyRepository $repository Repository.
      * @param mixed[]  $criteria   Field criteria.
      * @param string[] $sort       Optional sort.
      * @return \object
      * @throws \Cstea\ApiBundle\Exception\RecordLookupException Lookup error.
      * @throws \Cstea\ApiBundle\Exception\RecordNotFoundException No results.
      */
-    protected function getOne(ReadOnly $repository, array $criteria = [], array $sort = []): object
+    protected function getOne(ReadOnlyRepository $repository, array $criteria = [], array $sort = []): object
     {
         try {
             $entity = $repository->getOneBy($criteria, $sort);
@@ -39,7 +39,7 @@ trait LookupAware
     /**
      * Wrapper function for getting a collection of records from a repository.
      *
-     * @param ReadOnly $repository Repository.
+     * @param ReadOnlyRepository $repository Repository.
      * @param mixed[]  $criteria   Field criteria.
      * @param string[] $sort       Order.
      * @param int|null $limit      Limit.
@@ -48,11 +48,11 @@ trait LookupAware
      * @throws \Cstea\ApiBundle\Exception\RecordLookupException Record lookup.
      */
     protected function getMany(
-        ReadOnly $repository,
-        array $criteria = [],
-        array $sort = [],
-        ?int $limit = null,
-        ?int $offset = null
+        ReadOnlyRepository $repository,
+        array              $criteria = [],
+        array              $sort = [],
+        ?int               $limit = null,
+        ?int               $offset = null
     ): array {
         try {
             return $repository->getManyBy($criteria, $sort, $limit, $offset);

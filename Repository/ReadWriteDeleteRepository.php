@@ -8,7 +8,7 @@ namespace Cstea\ApiBundle\Repository;
  * 
  * @package Cstea\ApiBundle\Repository
  */
-interface ReadWriteDelete extends \Cstea\ApiBundle\Repository\ReadWrite
+interface ReadWriteDeleteRepository extends \Cstea\ApiBundle\Repository\ReadWriteRepository
 {
     /**
      * @param \object $entity Entity to delete.

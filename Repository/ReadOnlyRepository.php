@@ -8,7 +8,7 @@ namespace Cstea\ApiBundle\Repository;
  *
  * @package Cstea\ApiBundle\Repository
  */
-interface ReadOnly
+interface ReadOnlyRepository
 {
     /**
      * @param mixed[]  $criteria Field criteria.

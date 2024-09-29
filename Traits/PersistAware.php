@@ -3,8 +3,8 @@
 namespace Cstea\ApiBundle\Traits;
 
 use Cstea\ApiBundle\Event\Event;
-use Cstea\ApiBundle\Repository\ReadWrite;
-use Cstea\ApiBundle\Repository\ReadWriteDelete;
+use Cstea\ApiBundle\Repository\ReadWriteRepository;
+use Cstea\ApiBundle\Repository\ReadWriteDeleteRepository;
 
 /**
  * Trait PersistAware
@@ -22,12 +22,12 @@ trait PersistAware
      * Wrapper function for saving entities.
      *
      * @param \object    $entity     Entity to save.
-     * @param ReadWrite  $repository Repository to use.
+     * @param ReadWriteRepository  $repository Repository to use.
      * @param Event|null $onSuccess  Event to trigger on success.
      * @throws \Cstea\ApiBundle\Exception\RecordPersistException Save error.
      * @throws \Cstea\ApiBundle\Exception\RecordValidationException Validation error.
      */
-    protected function saveEntity(object $entity, ReadWrite $repository, ?Event $onSuccess = null): void
+    protected function saveEntity(object $entity, ReadWriteRepository $repository, ?Event $onSuccess = null): void
     {
         if (\method_exists($this, 'getLogger')) {
             $this->getLogger()->debug('Entity to save', ['entity' => $entity]);
@@ -53,11 +53,11 @@ trait PersistAware
      * Wrapper function for deleting entities.
      *
      * @param \object         $entity     Entity to delete.
-     * @param ReadWriteDelete $repository Repository to use.
+     * @param ReadWriteDeleteRepository $repository Repository to use.
      * @param Event|null      $onSuccess  Event to trigger on success.
      * @throws \Cstea\ApiBundle\Exception\RecordPersistException Save error.
      */
-    protected function deleteEntity(object $entity, ReadWriteDelete $repository, ?Event $onSuccess = null): void
+    protected function deleteEntity(object $entity, ReadWriteDeleteRepository $repository, ?Event $onSuccess = null): void
     {
         try {
             $repository->delete($entity);
